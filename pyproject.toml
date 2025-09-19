@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "devkit"
+version = "0.1.0"
+description = "DevKit: developer workflows CLI (Rails + Postgres), gh-like UX, agent-friendly"
+authors = ["Tu Nombre <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "devkit" }]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+typer = ">=0.12.3"
+rich = ">=13.7.1"
+PyYAML = ">=6.0.1"
+pydantic = ">=2.8.2"
+
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.6.4"
+
+[tool.poetry.scripts]
+devkit = "devkit.cli:app"
+
+[tool.ruff]
+line-length = 100
+select = ["E","F","I","B"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

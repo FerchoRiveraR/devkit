@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# DevKit executable wrapper (like `gh`)
+set -euo pipefail
+
+# Resolve repository root from this script's directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+# Ensure local package is importable without Poetry
+export PYTHONPATH="${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
+
+# Try system Python first, then Poetry
+if python3 -c "import typer" >/dev/null 2>&1; then
+  exec python3 -m devkit "$@"
+elif command -v poetry >/dev/null 2>&1; then
+  exec poetry run python -m devkit "$@"
+else
+  echo "DevKit: Python dependencies not found. Run 'make dev' or 'poetry install'." 1>&2
+  exit 1
+fi
